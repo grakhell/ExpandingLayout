@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExpandingLayout">
+        <attr name="duration" format="integer" />
+        <attr name="expanded" format="boolean" />
+        <attr name="parallax" format="float" />
+        <attr name="uses_spring" format="boolean"/>
+        <attr name="android:orientation"/>
+    </declare-styleable>
+</resources>

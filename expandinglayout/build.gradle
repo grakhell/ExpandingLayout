@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+}
+
+deps[project.name] = [
+        coreLibraryDesugaring    : [
+                deps.android.desugaring_lib
+        ],
+		implementation           : [
+                deps.kotlin.stdlib,
+                deps.android.core,
+                deps.android.appcompat,
+                deps.dynamicanimations.core,
+                deps.dynamicanimations.extensions
+        ],
+        testImplementation      : [
+                deps.test.junit
+        ],
+        androidTestImplementation : [
+                deps.test.ext,
+                deps.android_test.espresso
+        ]
+]
