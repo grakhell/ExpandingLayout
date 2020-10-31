@@ -62,7 +62,8 @@ class ExpandingLayout(
 
     private var usingSpring = false
 
-    private var listener:OnStateChangedListener? = null
+    private var stateListener:OnStateChangedListener? = null
+    private var animListener:AnimationListener? = null
 
     private var interpolator:Interpolator = FastOutSlowInInterpolator()
     private var animator: Animator? = null
@@ -109,11 +110,18 @@ class ExpandingLayout(
     }
 
     fun setOnStateChangedListener(listener: OnStateChangedListener) {
-        this.listener = listener
+        this.stateListener = listener
     }
 
     fun removeOnStateChangedListener() {
-        this.listener = null
+        this.stateListener = null
+    }
+    fun setAnimationListener(listener: AnimationListener) {
+        this.animListener = listener
+    }
+
+    fun removeAnimationListener() {
+        this.animListener = null
     }
 
     fun setSpring(spring: SpringForce) {
@@ -158,11 +166,15 @@ class ExpandingLayout(
             val endListener = DynamicAnimation.OnAnimationEndListener {_, canceled, value, _ ->
                 if (!canceled) {
                     state = if (value == EXP_STATE_COLLAPSED) COLLAPSED else EXPANDED
+                    animListener?.onEnd(state)
+                }else {
+                    animListener?.onCancel(state)
                 }
             }
             state = if (target == EXP_STATE_COLLAPSED) COLLAPSING else EXPANDING
             springAnimator
                 .addEndListener(endListener)
+            animListener?.onStart(state)
             springAnimator.animateToFinalPosition(target)
         } else {
             var canceled = false
@@ -175,15 +187,18 @@ class ExpandingLayout(
                 }
                 doOnStart {
                     state = if (target == EXP_STATE_COLLAPSED) COLLAPSING else EXPANDING
+                    animListener?.onStart(state)
                 }
                 doOnEnd {
                     if (!canceled) {
                         state = if (target == EXP_STATE_COLLAPSED) COLLAPSED else EXPANDED
                         setExpandStateInner(target)
+                        animListener?.onEnd(state)
                     }
                 }
                 doOnCancel {
                     canceled = true
+                    animListener?.onCancel(state)
                 }
             }
             animator?.start()
@@ -200,7 +215,7 @@ class ExpandingLayout(
         visibility = if (state == COLLAPSED) View.GONE else View.VISIBLE
         expState = target
         requestLayout()
-        listener?.expansionStateChanged(target/1000,state)
+        stateListener?.expansionStateChanged(target/1000,state)
     }
 
     override fun onSaveInstanceState(): Parcelable? {
@@ -269,5 +284,11 @@ class ExpandingLayout(
 
     interface OnStateChangedListener {
         fun expansionStateChanged(fraction:Float, @ExpandState state:Int)
+    }
+
+    interface AnimationListener {
+        fun onStart(@ExpandState state: Int)
+        fun onEnd(@ExpandState state: Int)
+        fun onCancel(@ExpandState state: Int)
     }
 }
