@@ -7,76 +7,46 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.Interpolator
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.annotation.FloatRange
-import androidx.annotation.IntDef
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.os.bundleOf
-import androidx.core.view.NestedScrollingChild
-import androidx.core.view.NestedScrollingChild2
-import androidx.core.view.NestedScrollingChild3
-import androidx.core.view.NestedScrollingChildHelper
-import androidx.core.view.NestedScrollingParent
-import androidx.core.view.NestedScrollingParent2
-import androidx.core.view.NestedScrollingParent3
-import androidx.core.view.NestedScrollingParentHelper
-import androidx.core.view.ScrollingView
-import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.dynamicanimation.animation.SpringForce
 import androidx.dynamicanimation.animation.springAnimationOf
 import androidx.dynamicanimation.animation.withSpringForceProperties
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.recyclerview.widget.RecyclerView
 import ru.grakhell.expandinglayout.util.maxmin
 import kotlin.math.ceil
 import kotlin.math.round
 
-const val VERTICAL = LinearLayout.VERTICAL
-const val HORIZONTAL = LinearLayout.HORIZONTAL
+private const val KEY_SUPER = "rv_super"
+private const val KEY_EXP = "exp_rv_layout"
 
-const val EXPANDED = 0
-const val EXPANDING = 1
-const val COLLAPSING = 2
-const val COLLAPSED = 3
-const val FIXED_SIZE = 4
-
-internal const val EXP_STATE_EXPANDED = 1000f
-internal const val EXP_STATE_COLLAPSED = 0f
-
-internal const val DEFAULT_DURATION = 300L
-internal const val DEFAULT_PARALLAX = 0.5f
-internal const val DEFAULT_EXP_STATE = EXP_STATE_EXPANDED
-internal const val DEFAULT_ORIENTATION = VERTICAL
-private const val KEY_SUPER = "super"
-private const val KEY_EXP = "exp_layout"
-
-class ExpandingLayout(
+class ExpandingRecyclerView(
     context: Context,
     attrs: AttributeSet? = null
-):FrameLayout(context, attrs){
+):RecyclerView(context, attrs) {
 
     private var duration = DEFAULT_DURATION
     private var parallax = DEFAULT_PARALLAX
     private var expState = DEFAULT_EXP_STATE
 
-    @ExpandState
+    @ExpandingLayout.ExpandState
     private var state = EXPANDED
-    @Orientation
-    private var orientation = DEFAULT_ORIENTATION
 
-    private var usingSpring = false
+    private var usingSpring = true
+    private var nestedScrollExpandedState = isNestedScrollingEnabled
 
-    private var stateListener:OnStateChangedListener? = null
-    private var animListener:AnimationListener? = null
+    private var stateListener: ExpandingLayout.OnStateChangedListener? = null
+    private var animListener: ExpandingLayout.AnimationListener? = null
 
-    private var interpolator:Interpolator = FastOutSlowInInterpolator()
+    private var interpolator: Interpolator = FastOutSlowInInterpolator()
     private var animator: Animator? = null
     private val springAnimator = springAnimationOf(
         {float -> setExpandStateInner(float)},
@@ -89,12 +59,11 @@ class ExpandingLayout(
 
     init {
         attrs?.let {
-            val a = context.obtainStyledAttributes(it, R.styleable.ExpandingLayout)
-            duration = a.getInt(R.styleable.ExpandingLayout_duration, DEFAULT_DURATION.toInt()).toLong()
-            parallax = a.getFloat(R.styleable.ExpandingLayout_parallax, DEFAULT_PARALLAX)
-            expState = if (a.getBoolean(R.styleable.ExpandingLayout_expanded, true)) {EXP_STATE_EXPANDED} else {EXP_STATE_COLLAPSED}
-            orientation = a.getInt(R.styleable.ExpandingLayout_android_orientation, DEFAULT_ORIENTATION)
-            usingSpring = a.getBoolean(R.styleable.ExpandingLayout_uses_spring, false)
+            val a = context.obtainStyledAttributes(it, R.styleable.ExpandingRecyclerView)
+            duration = a.getInt(R.styleable.ExpandingRecyclerView_rv_duration, DEFAULT_DURATION.toInt()).toLong()
+            parallax = a.getFloat(R.styleable.ExpandingRecyclerView_rv_parallax, DEFAULT_PARALLAX)
+            expState = if (a.getBoolean(R.styleable.ExpandingRecyclerView_rv_expanded, true)) {EXP_STATE_EXPANDED} else {EXP_STATE_COLLAPSED}
+            usingSpring = a.getBoolean(R.styleable.ExpandingRecyclerView_rv_uses_spring, false)
             state = when (expState) {
                 EXP_STATE_COLLAPSED -> COLLAPSED
                 EXP_STATE_EXPANDED -> EXPANDED
@@ -105,29 +74,25 @@ class ExpandingLayout(
         }
     }
 
-
     fun setParallax(
         @FloatRange(from = 0.0, to = 1.0, fromInclusive = true, toInclusive = true) parallax:Float
     ) {
         val par = maxmin(1f,0f,parallax)
         this.parallax = par
     }
-    fun setOrientation(@Orientation orientation: Int) {
-        if (orientation != 0 ||orientation != 1) throw IllegalArgumentException("Orientation must be either 0 (horizontal) or 1 (vertical), current - $orientation")
-        this.orientation = orientation
-    }
+
     fun setInterpolator(interpolator: Interpolator) {
         this.interpolator = interpolator
     }
 
-    fun setOnStateChangedListener(listener: OnStateChangedListener) {
+    fun setOnStateChangedListener(listener: ExpandingLayout.OnStateChangedListener) {
         this.stateListener = listener
     }
 
     fun removeOnStateChangedListener() {
         this.stateListener = null
     }
-    fun setAnimationListener(listener: AnimationListener) {
+    fun setAnimationListener(listener: ExpandingLayout.AnimationListener) {
         this.animListener = listener
     }
 
@@ -138,12 +103,9 @@ class ExpandingLayout(
     fun setSpring(spring: SpringForce) {
         springAnimator.spring = spring
     }
-
     fun getState() = state
     fun getDuration() = duration
     fun getParallax() = parallax
-    @Orientation
-    fun getOrientation() = orientation
     fun getExpansionState() = expState
 
     fun isExpanded() = state == EXPANDED ||  state == EXPANDING || state == FIXED_SIZE
@@ -191,8 +153,8 @@ class ExpandingLayout(
             var canceled = false
             animator?.cancel()
             animator = ValueAnimator.ofFloat(expState,target).apply {
-                interpolator = this@ExpandingLayout.interpolator
-                duration = this@ExpandingLayout.duration
+                interpolator = this@ExpandingRecyclerView.interpolator
+                duration = this@ExpandingRecyclerView.duration
                 addUpdateListener {
                     setExpandStateInner(it.animatedValue as Float)
                 }
@@ -241,7 +203,7 @@ class ExpandingLayout(
     override fun onRestoreInstanceState(state: Parcelable?) {
         val bundle = state as Bundle?
         expState = bundle?.getFloat(KEY_EXP, DEFAULT_EXP_STATE)?:expState
-        val sup:Parcelable? = bundle?.getParcelable(KEY_SUPER)
+        val sup: Parcelable? = bundle?.getParcelable(KEY_SUPER)
         this.state = when (expState) {
             EXP_STATE_COLLAPSED -> COLLAPSED
             EXP_STATE_EXPANDED -> EXPANDED
@@ -253,53 +215,29 @@ class ExpandingLayout(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
-        val size = if (orientation == HORIZONTAL) measuredWidth else measuredHeight
-        visibility = if(state == COLLAPSED) View.GONE else View.VISIBLE
+        val size = measuredHeight
+        if(state == COLLAPSED) {
+            visibility = View.GONE
+            nestedScrollExpandedState = isNestedScrollingEnabled
+            isNestedScrollingEnabled = false
+        } else {
+            visibility = View.VISIBLE
+            isNestedScrollingEnabled = nestedScrollExpandedState
+        }
 
         val delta =  size - round(size*(expState/1000))
         if (parallax>0){
             val parOffset = delta * parallax
             children.forEach {child ->
-                when(orientation){
-                    VERTICAL -> child.translationY = -parOffset
-                    HORIZONTAL -> {
-                        val dir = when(layoutDirection) {
-                            View.LAYOUT_DIRECTION_RTL -> 1
-                            View.LAYOUT_DIRECTION_LTR -> -1
-                            else -> -1
-                        }
-                        child.translationX = dir * parOffset
-                    }
-                }
+                child.translationY = -parOffset
             }
         }
-        when(orientation) {
-            VERTICAL -> setMeasuredDimension(measuredWidth, (measuredHeight - delta).toInt())
-            HORIZONTAL -> setMeasuredDimension((measuredWidth - delta).toInt(),  measuredHeight)
-        }
+        setMeasuredDimension(measuredWidth, (measuredHeight - delta).toInt())
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         animator?.cancel()
         springAnimator.cancel()
         super.onConfigurationChanged(newConfig)
-    }
-
-    @Retention(AnnotationRetention.SOURCE)
-    @IntDef(VERTICAL, HORIZONTAL)
-    annotation class Orientation
-
-    @Retention(AnnotationRetention.SOURCE)
-    @IntDef(EXPANDED, EXPANDING, COLLAPSING, COLLAPSED, FIXED_SIZE)
-    annotation class ExpandState
-
-    interface OnStateChangedListener {
-        fun expansionStateChanged(fraction:Float, @ExpandState state:Int)
-    }
-
-    interface AnimationListener {
-        fun onStart(@ExpandState state: Int)
-        fun onEnd(@ExpandState state: Int)
-        fun onCancel(@ExpandState state: Int)
     }
 }

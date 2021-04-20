@@ -13,7 +13,8 @@ deps[project.name] = [
                 deps.android.core,
                 deps.android.appcompat,
                 deps.dynamicanimations.core,
-                deps.dynamicanimations.extensions
+                deps.dynamicanimations.extensions,
+                deps.android.recyclerview
         ],
         testImplementation      : [
                 deps.test.junit
