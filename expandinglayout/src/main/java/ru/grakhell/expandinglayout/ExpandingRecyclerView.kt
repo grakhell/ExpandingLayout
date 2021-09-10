@@ -89,9 +89,6 @@ class ExpandingRecyclerView(
         this.stateListener = listener
     }
 
-    fun removeOnStateChangedListener() {
-        this.stateListener = null
-    }
     fun setAnimationListener(listener: ExpandingLayout.AnimationListener) {
         this.animListener = listener
     }
@@ -100,12 +97,7 @@ class ExpandingRecyclerView(
         this.animListener = null
     }
 
-    fun setSpring(spring: SpringForce) {
-        springAnimator.spring = spring
-    }
     fun getState() = state
-    fun getDuration() = duration
-    fun getParallax() = parallax
     fun getExpansionState() = expState
 
     fun isExpanded() = state == EXPANDED ||  state == EXPANDING || state == FIXED_SIZE
@@ -191,7 +183,7 @@ class ExpandingRecyclerView(
         stateListener?.expansionStateChanged(target/1000,state)
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         val sup = super.onSaveInstanceState()
         val exp = ceil(expState)
         return bundleOf(

@@ -7,11 +7,13 @@ inline fun ExpandingLayout.addAnimListener(
     crossinline onEnd: (state:Int) -> Unit = {},
     crossinline onCancel: (state:Int) -> Unit = {}
 ) {
+
     val listener = object : ExpandingLayout.AnimationListener {
         override fun onStart(state: Int) = onStart(state)
         override fun onEnd(state: Int) = onEnd(state)
         override fun onCancel(state: Int) = onCancel(state)
     }
+    this.setAnimationListener(listener)
 }
 
 inline fun ExpandingLayout.doOnStart(

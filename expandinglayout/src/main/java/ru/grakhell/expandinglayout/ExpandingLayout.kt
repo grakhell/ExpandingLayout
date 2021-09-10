@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.Interpolator
 import android.widget.FrameLayout
@@ -18,16 +17,6 @@ import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.os.bundleOf
-import androidx.core.view.NestedScrollingChild
-import androidx.core.view.NestedScrollingChild2
-import androidx.core.view.NestedScrollingChild3
-import androidx.core.view.NestedScrollingChildHelper
-import androidx.core.view.NestedScrollingParent
-import androidx.core.view.NestedScrollingParent2
-import androidx.core.view.NestedScrollingParent3
-import androidx.core.view.NestedScrollingParentHelper
-import androidx.core.view.ScrollingView
-import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.dynamicanimation.animation.SpringForce
@@ -229,7 +218,7 @@ class ExpandingLayout(
         stateListener?.expansionStateChanged(target/1000,state)
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         val sup = super.onSaveInstanceState()
         val exp = ceil(expState)
         return bundleOf(

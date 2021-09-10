@@ -193,7 +193,7 @@ class ExpandingNestedScrollView(
         stateListener?.expansionStateChanged(target/1000,state)
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         val sup = super.onSaveInstanceState()
         val exp = ceil(expState)
         return bundleOf(
