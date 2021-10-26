@@ -60,6 +60,10 @@ internal const val DEFAULT_ORIENTATION = VERTICAL
 private const val KEY_SUPER = "super"
 private const val KEY_EXP = "exp_layout"
 
+/**
+ *  Frame layout that's can be expanded or collapsed
+ */
+
 class ExpandingLayout(
     context: Context,
     attrs: AttributeSet? = null
@@ -81,6 +85,7 @@ class ExpandingLayout(
 
     private var interpolator:Interpolator = FastOutSlowInInterpolator()
     private var animator: Animator? = null
+
     private val springAnimator = springAnimationOf(
         {float -> setExpandStateInner(float)},
         {expState}
@@ -108,13 +113,13 @@ class ExpandingLayout(
         }
     }
 
-
     fun setParallax(
         @FloatRange(from = 0.0, to = 1.0, fromInclusive = true, toInclusive = true) parallax:Float
     ) {
         val par = maxmin(1f,0f,parallax)
         this.parallax = par
     }
+
     fun setOrientation(@Orientation orientation: Int) {
         if (orientation != 0 ||orientation != 1) throw IllegalArgumentException("Orientation must be either 0 (horizontal) or 1 (vertical), current - $orientation")
         this.orientation = orientation

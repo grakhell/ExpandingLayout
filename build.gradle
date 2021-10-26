@@ -1,0 +1,88 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    apply from:  'dependencies.gradle'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
+    }
+}
+
+ext {
+    minSdkVersion = 21
+    targetSdkVersion = 31
+    compileSdkVersion = 31
+    buildToolsVersion = "31.0.0"
+    androidVersionCode = 1000
+    androidVersionName = "2021.01"
+    applicationIdBase = "ru.grakhell.expandinglayout"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+    targetCompatibilityVersion = JavaVersion.VERSION_1_8
+    jvmTargetVersion = JavaVersion.VERSION_1_8.toString()
+}
+
+subprojects {
+    afterEvaluate { project ->
+        repositories {
+            google()
+            mavenCentral()
+            maven {
+                name 'snapshots'
+                url 'https://oss.sonatype.org/content/repositories/snapshots'
+            }
+        }
+        android {
+            compileSdkVersion rootProject.ext.compileSdkVersion
+            defaultConfig {
+                minSdkVersion rootProject.ext.minSdkVersion
+                targetSdkVersion rootProject.ext.targetSdkVersion
+                versionCode rootProject.ext.androidVersionCode
+                versionName rootProject.ext.androidVersionName
+            }
+            compileOptions {
+                coreLibraryDesugaringEnabled true
+                sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+                targetCompatibility rootProject.ext.targetCompatibilityVersion
+            }
+
+            kotlinOptions {
+                jvmTarget = rootProject.ext.jvmTargetVersion
+            }
+
+            lintOptions {
+                abortOnError true
+            }
+            buildTypes {
+                release {
+                    minifyEnabled true
+                    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                }
+                debug {
+                    minifyEnabled true
+                    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                }
+            }
+        }
+
+        dependencies {
+            deps[project.name].each { configuration, dependencies ->
+                dependencies.each { dependency ->
+                    if (dependency != null)
+                    {
+                        "${configuration}"(dependency)
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

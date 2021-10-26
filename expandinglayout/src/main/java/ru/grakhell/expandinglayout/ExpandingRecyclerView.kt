@@ -39,6 +39,10 @@ import ru.grakhell.expandinglayout.util.maxmin
 import kotlin.math.ceil
 import kotlin.math.round
 
+/**
+ * Version of recycler view that's can be expanded or collapsed
+ */
+
 private const val KEY_SUPER = "rv_super"
 private const val KEY_EXP = "exp_rv_layout"
 
