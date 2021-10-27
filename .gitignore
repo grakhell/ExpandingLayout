@@ -21,3 +21,5 @@ gradle/
 .scannerwork/
 
 expandinglayout/src/androidTest/
+
+expandinglayout/src/test/

@@ -1,4 +1,4 @@
-package ru.grakhell.expandinglayout
+package io.github.grakhell.expandinglayout
 /*
 Copyright 2021 Dmitrii Z.
 
@@ -35,7 +35,7 @@ import androidx.dynamicanimation.animation.SpringForce
 import androidx.dynamicanimation.animation.springAnimationOf
 import androidx.dynamicanimation.animation.withSpringForceProperties
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import ru.grakhell.expandinglayout.util.maxmin
+import io.github.grakhell.expandinglayout.util.maxmin
 import kotlin.math.ceil
 import kotlin.math.round
 
@@ -80,7 +80,11 @@ class ExpandingNestedScrollView(
             val a = context.obtainStyledAttributes(it, R.styleable.ExpandingNestedScrollView)
             duration = a.getInt(R.styleable.ExpandingNestedScrollView_n_duration, DEFAULT_DURATION.toInt()).toLong()
             parallax = a.getFloat(R.styleable.ExpandingNestedScrollView_n_parallax, DEFAULT_PARALLAX)
-            expState = if (a.getBoolean(R.styleable.ExpandingNestedScrollView_n_expanded, true)) {EXP_STATE_EXPANDED} else {EXP_STATE_COLLAPSED}
+            expState = if (a.getBoolean(R.styleable.ExpandingNestedScrollView_n_expanded, true)) {
+                EXP_STATE_EXPANDED
+            } else {
+                EXP_STATE_COLLAPSED
+            }
             usingSpring = a.getBoolean(R.styleable.ExpandingNestedScrollView_n_uses_spring, false)
             state = when (expState) {
                 EXP_STATE_COLLAPSED -> COLLAPSED

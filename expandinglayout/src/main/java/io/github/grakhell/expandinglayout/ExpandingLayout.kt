@@ -1,4 +1,4 @@
-package ru.grakhell.expandinglayout
+package io.github.grakhell.expandinglayout
 /*
 Copyright 2021 Dmitrii Z.
 
@@ -37,7 +37,7 @@ import androidx.dynamicanimation.animation.SpringForce
 import androidx.dynamicanimation.animation.springAnimationOf
 import androidx.dynamicanimation.animation.withSpringForceProperties
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import ru.grakhell.expandinglayout.util.maxmin
+import io.github.grakhell.expandinglayout.util.maxmin
 import kotlin.math.ceil
 import kotlin.math.round
 
@@ -80,8 +80,8 @@ class ExpandingLayout(
 
     private var usingSpring = false
 
-    private var stateListener:OnStateChangedListener? = null
-    private var animListener:AnimationListener? = null
+    private var stateListener: OnStateChangedListener? = null
+    private var animListener: AnimationListener? = null
 
     private var interpolator:Interpolator = FastOutSlowInInterpolator()
     private var animator: Animator? = null
@@ -100,7 +100,11 @@ class ExpandingLayout(
             val a = context.obtainStyledAttributes(it, R.styleable.ExpandingLayout)
             duration = a.getInt(R.styleable.ExpandingLayout_duration, DEFAULT_DURATION.toInt()).toLong()
             parallax = a.getFloat(R.styleable.ExpandingLayout_parallax, DEFAULT_PARALLAX)
-            expState = if (a.getBoolean(R.styleable.ExpandingLayout_expanded, true)) {EXP_STATE_EXPANDED} else {EXP_STATE_COLLAPSED}
+            expState = if (a.getBoolean(R.styleable.ExpandingLayout_expanded, true)) {
+                EXP_STATE_EXPANDED
+            } else {
+                EXP_STATE_COLLAPSED
+            }
             orientation = a.getInt(R.styleable.ExpandingLayout_android_orientation, DEFAULT_ORIENTATION)
             usingSpring = a.getBoolean(R.styleable.ExpandingLayout_uses_spring, false)
             state = when (expState) {

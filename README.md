@@ -1,5 +1,5 @@
 # Expanding Layout
-Layout that's can be expanded or collapsed
+Android view layout that's can be expanded or collapsed
 
 ## Download
 Grab via Gradle:
@@ -9,21 +9,21 @@ Grab via Gradle:
 
 ## How to use
 ```XML
-    <ru.grakhell.expandinglayout.ExpandingLayout
-        android:id="@+id/user_exp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:duration = "200"
-        app:expanded = "false"
-		app:uses_spring = "false"
-        app:parallax = "0.6">
-			<!--Any child View here, TabLayout for example. -->
-	</ru.grakhell.expandinglayout.ExpandingLayout>
+<ru.grakhell.expandinglayout.ExpandingLayout
+	android:id="@+id/user_exp"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	app:duration = "200"
+	app:expanded = "false"
+	app:uses_spring = "false"
+	app:parallax = "0.6">
+		<!--Any child View here, TabLayout for example. -->
+</ru.grakhell.expandinglayout.ExpandingLayout>
 ```
 
 ```kotlin
 
-    expandingLayout.setDuration(200l)
+	expandingLayout.setDuration(200l)
 	expandingLayout.setParallax(0.6)
 	
 	expandingLayout.toggle() //By default it's animated but you can switch state without animation by .toggle(false)

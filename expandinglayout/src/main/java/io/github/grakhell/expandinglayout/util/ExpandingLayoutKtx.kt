@@ -1,4 +1,4 @@
-package ru.grakhell.expandinglayout.util
+package io.github.grakhell.expandinglayout.util
 /*
 Copyright 2021 Dmitrii Z.
 
@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import ru.grakhell.expandinglayout.ExpandingLayout
+import io.github.grakhell.expandinglayout.ExpandingLayout
 
 inline fun ExpandingLayout.addAnimListener(
     crossinline onStart: (state:Int) -> Unit = {},
@@ -56,7 +56,7 @@ inline fun ExpandingLayout.doOnStateChanged(
 
 inline fun ExpandingLayout.addOnStateChanged(
     crossinline onStateChanged: (fraction:Float, state:Int) -> Unit = {_,_ ->},
-):ExpandingLayout.OnStateChangedListener {
+): ExpandingLayout.OnStateChangedListener {
     val listener = object : ExpandingLayout.OnStateChangedListener {
         override fun expansionStateChanged(fraction: Float, state: Int) = onStateChanged(fraction, state)
     }

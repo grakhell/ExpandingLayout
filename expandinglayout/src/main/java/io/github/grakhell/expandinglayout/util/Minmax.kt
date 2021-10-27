@@ -1,4 +1,4 @@
-package ru.grakhell.expandinglayout.util
+package io.github.grakhell.expandinglayout.util
 /*
 Copyright 2021 Dmitrii Z.
 

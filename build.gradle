@@ -18,8 +18,8 @@ ext {
     compileSdkVersion = 31
     buildToolsVersion = "31.0.0"
     androidVersionCode = 1000
-    androidVersionName = "2021.01"
-    applicationIdBase = "ru.grakhell.expandinglayout"
+    androidVersionName = "2021.01.01"
+    applicationIdBase = "io.github.grakhell.expandinglayout"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
