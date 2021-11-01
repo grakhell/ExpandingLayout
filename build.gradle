@@ -24,7 +24,7 @@ ext {
     compileSdkVersion = 31
     buildToolsVersion = "31.0.0"
     androidVersionCode = 1000
-    androidVersionName = System.getenv('LIB_VERSION') ?: "1.0.0"
+    androidVersionName = libVersion ?: "1.0.0"
     applicationIdBase = "io.github.grakhell.expandinglayout"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
