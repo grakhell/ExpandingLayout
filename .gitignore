@@ -1,5 +1,5 @@
 *.iml
-.gradle
+.gradle/
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -13,13 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
-
 .idea/
-
 gradle/
-
 .scannerwork/
-
 expandinglayout/src/androidTest/
-
+expandinglayout/.gradle/
 expandinglayout/src/test/

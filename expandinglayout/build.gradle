@@ -1,5 +1,14 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+
+ext {
+    PUBLISH_GROUP_ID = 'io.github.grakhell'
+    PUBLISH_VERSION = rootProject.ext.androidVersionName
+    PUBLISH_ARTIFACT_ID = 'ExpandingLayout'
+}
+
+apply from: "${rootProject.projectDir}/scripts/p-module.gradle"
 
 android {
 }
