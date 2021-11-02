@@ -83,7 +83,7 @@ afterEvaluate {
 		}
 	}
 	signing {
-		useGpgCmd()
+		useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
 		sign publishing.publications
 	}
 }
