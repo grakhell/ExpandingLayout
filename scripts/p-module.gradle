@@ -1,5 +1,3 @@
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
 apply plugin: 'org.jetbrains.dokka'
 
 task androidSourcesJar(type: Jar) {
@@ -81,9 +79,5 @@ afterEvaluate {
 				}
 			}
 		}
-	}
-	signing {
-		useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-		sign publishing.publications
 	}
 }

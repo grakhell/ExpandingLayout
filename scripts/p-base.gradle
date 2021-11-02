@@ -1,3 +1,5 @@
+apply plugin: 'signing'
+apply plugin: 'maven-publish'
 
 nexusPublishing {
     repositories {
@@ -9,4 +11,12 @@ nexusPublishing {
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
         }
     }
+}
+
+signing {
+    def KeyId = findProperty("signingKeyId")
+    def Key = findProperty("signingKey")
+    def Password = findProperty("signingPassword")
+    useInMemoryPgpKeys(KeyId, Key, Password)
+    sign publishing.publications
 }
