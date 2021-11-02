@@ -1,10 +1,11 @@
-name: Publish
+name: Sign
 on:
   push:
     branches:
       - master
       - dev
       - testing
+      - ci-scripts
   pull_request:
 jobs:
   publish:
