@@ -19,7 +19,7 @@ jobs:
       - name: Decode
         run: |
           echo '${{secrets.GPG_KEY_CONTENTS}}' | base64 -d > publish_key.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase=${{secrets.PASSPHRASE}} --output secret.gpg publish_key.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase "${{secrets.PASSPHRASE}}" --output secret.gpg publish_key.gpg
       - name: Sign with Gradle
         uses: eskatos/gradle-command-action@v1
         with:
