@@ -4,7 +4,7 @@ Android view layout that's can be expanded or collapsed
 ## Download
 Grab via Gradle:
 ```kotlin
-
+    Not available yet
 ```
 
 ## How to use
