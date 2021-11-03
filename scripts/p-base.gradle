@@ -12,11 +12,3 @@ nexusPublishing {
         }
     }
 }
-
-signing {
-    def KeyId = findProperty("signingKeyId")
-    def Key = findProperty("signingKey")
-    def Password = findProperty("signingPassword")
-    useInMemoryPgpKeys(KeyId, Key, Password)
-    sign publishing.publications
-}

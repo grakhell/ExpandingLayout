@@ -81,3 +81,11 @@ afterEvaluate {
 		}
 	}
 }
+
+signing {
+	def KeyId = signingKeyId
+	def Key = signingKey
+	def Password = signingPassword
+	useInMemoryPgpKeys(KeyId, Key, Password)
+	sign publishing.publications
+}
