@@ -89,7 +89,3 @@ subprojects {
 }
 
 apply from: "${rootProject.projectDir}/scripts/p-base.gradle"
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}

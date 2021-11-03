@@ -1,3 +1,5 @@
+apply plugin: 'signing'
+apply plugin: 'maven-publish'
 
 nexusPublishing {
     repositories {
