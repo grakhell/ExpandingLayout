@@ -11,13 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'grakhell/ExpandingLayout'
     steps:
-    - uses: actions/checkout@v2
+    - name: Check
+      uses: actions/checkout@v2
+      with:
+        repository: grakhell/ExpandingLayout
     - name: Set up JDK 8
       uses: actions/setup-java@v2
       with:
         java-version: 11
+        distribution: 'zulu'
     - name: Build with Gradle
       uses: eskatos/gradle-command-action@v2
       with:
         gradle-version: current
-        arguments: build -PsonatypeUsername=${{secrets.SONATYPE_USERNAME}} -PsonatypePassword=${{secrets.SONATYPE_PASSWORD}} -PsonatypeProfileId=${{secrets.SONATYPE_PROFILE}} -PlibVersion=${{secrets.BUILD_VERSION}}
+        arguments: build --no-daemon --no-parallel -PsonatypeUsername=${{secrets.SONATYPE_USERNAME}} -PsonatypePassword=${{secrets.SONATYPE_PASSWORD}} -PsonatypeProfileId=${{secrets.SONATYPE_PROFILE}} -PlibVersion=${{secrets.BUILD_VERSION}}
