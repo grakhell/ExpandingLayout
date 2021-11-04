@@ -2,9 +2,17 @@
 Android view layout that's can be expanded or collapsed
 
 ## Download
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.grakhell/ExpandingLayout.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.grakhell%22%20AND%20a:%22ExpandingLayout%22)
+
 Grab via Gradle:
+
+groovy
+```groovy
+    implementation 'io.github.grakhell:ExpandingLayout:$latest_version'
+``` 
+kotlin dsl
 ```kotlin
-    Not available yet
+    implementation("io.github.grakhell:ExpandingLayout:$latest_version")
 ```
 
 ## How to use
@@ -21,11 +29,31 @@ Grab via Gradle:
 </ru.grakhell.expandinglayout.ExpandingLayout>
 ```
 
+A layout can use a standard interpolator-based animator or a spring-based dynamic animator to animate its state change. This is selected by the xml flag app:uses_spring.
+Used spring can be configured by method:
 ```kotlin
+    expandingLayout.setSpring()
+```
+it takes [SpringForce](https://developer.android.com/reference/androidx/dynamicanimation/animation/SpringForce "") object as argument
 
+And interpolator for non-dynamic animator is setting by method:
+```kotlin
+    expandingLayout.setInterpolator() 
+```
+it takes [Interpolator](https://developer.android.com/reference/android/view/animation/Interpolator "") object as argument.
+
+Programmatically, the state can be set more precisely by the method:
+```kotlin
+	expandingLayout.setExpandState() // It takes a float argument ranging from 0 to 1, where 0 is completely collapsed and 1 is expanded
+```
+
+If a spring is used, duration setting has no effect. Otherwise, it sets the duration of the state change animation
+```kotlin
 	expandingLayout.setDuration(200l)
+```
+
+```kotlin
 	expandingLayout.setParallax(0.6)
-	
 	expandingLayout.toggle() //By default it's animated but you can switch state without animation by .toggle(false)
 ```
 
