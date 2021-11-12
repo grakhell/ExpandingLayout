@@ -17,8 +17,7 @@ kotlin dsl
 
 ## How to use
 ```XML
-<ru.grakhell.expandinglayout.ExpandingLayout
-	android:id="@+id/user_exp"
+<io.github.grakhell.expandinglayout.ExpandingLayout
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	app:duration = "200"
@@ -26,7 +25,7 @@ kotlin dsl
 	app:uses_spring = "false"
 	app:parallax = "0.6">
 		<!--Any child View here, TabLayout for example. -->
-</ru.grakhell.expandinglayout.ExpandingLayout>
+</io.github.grakhell.expandinglayout.ExpandingLayout>
 ```
 
 A layout can use a standard interpolator-based animator or a spring-based dynamic animator to animate its state change. This is selected by the xml flag app:uses_spring.
