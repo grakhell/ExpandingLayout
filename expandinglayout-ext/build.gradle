@@ -6,8 +6,8 @@ apply plugin: 'maven-publish'
 ext {
     PUBLISH_GROUP_ID = 'io.github.grakhell'
     PUBLISH_VERSION = rootProject.ext.androidVersionName
-    PUBLISH_ARTIFACT_ID = 'ExpandingLayout'
-    PUBLISH_DESCRIPTION = 'Android view layout that\'s can be expanded or collapsed'
+    PUBLISH_ARTIFACT_ID = 'ExpandingLayout-ext'
+    PUBLISH_DESCRIPTION = 'Extansion to ExpandingLayout lib that\'s provided ExpandingNestedScrollView and ExpandingRecyclerView'
 }
 
 apply from: "${rootProject.projectDir}/scripts/p-module.gradle"
@@ -19,12 +19,16 @@ deps[project.name] = [
         coreLibraryDesugaring    : [
                 deps.android.desugaring_lib
         ],
-		implementation           : [
+        api                      : [
+                project(":expandinglayout")
+        ],
+        implementation           : [
                 deps.kotlin.stdlib,
                 deps.android.core,
                 deps.android.appcompat,
                 deps.dynamicanimations.core,
-                deps.dynamicanimations.extensions
+                deps.dynamicanimations.extensions,
+                deps.android.recyclerview
         ],
         testImplementation      : [
                 deps.test.junit

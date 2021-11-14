@@ -7,16 +7,4 @@
         <attr name="uses_spring" format="boolean"/>
         <attr name="android:orientation"/>
     </declare-styleable>
-    <declare-styleable name="ExpandingNestedScrollView">
-        <attr name="n_duration" format="integer" />
-        <attr name="n_expanded" format="boolean" />
-        <attr name="n_parallax" format="float" />
-        <attr name="n_uses_spring" format="boolean"/>
-    </declare-styleable>
-    <declare-styleable name="ExpandingRecyclerView">
-        <attr name="rv_duration" format="integer" />
-        <attr name="rv_expanded" format="boolean" />
-        <attr name="rv_parallax" format="float" />
-        <attr name="rv_uses_spring" format="boolean"/>
-    </declare-styleable>
 </resources>

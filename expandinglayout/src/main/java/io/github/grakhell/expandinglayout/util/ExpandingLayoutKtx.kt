@@ -14,7 +14,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+import io.github.grakhell.expandinglayout.AnimationListener
 import io.github.grakhell.expandinglayout.ExpandingLayout
+import io.github.grakhell.expandinglayout.OnStateChangedListener
 
 inline fun ExpandingLayout.addAnimListener(
     crossinline onStart: (state:Int) -> Unit = {},
@@ -22,7 +24,7 @@ inline fun ExpandingLayout.addAnimListener(
     crossinline onCancel: (state:Int) -> Unit = {}
 ) {
 
-    val listener = object : ExpandingLayout.AnimationListener {
+    val listener = object : AnimationListener {
         override fun onStart(state: Int) = onStart(state)
         override fun onEnd(state: Int) = onEnd(state)
         override fun onCancel(state: Int) = onCancel(state)
@@ -56,8 +58,8 @@ inline fun ExpandingLayout.doOnStateChanged(
 
 inline fun ExpandingLayout.addOnStateChanged(
     crossinline onStateChanged: (fraction:Float, state:Int) -> Unit = {_,_ ->},
-): ExpandingLayout.OnStateChangedListener {
-    val listener = object : ExpandingLayout.OnStateChangedListener {
+): OnStateChangedListener {
+    val listener = object : OnStateChangedListener {
         override fun expansionStateChanged(fraction: Float, state: Int) = onStateChanged(fraction, state)
     }
     setOnStateChangedListener(listener)
