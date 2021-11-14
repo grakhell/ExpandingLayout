@@ -1,4 +1,4 @@
-package io.github.grakhell.expandinglayout
+package io.github.grakhell.expandinglayout_ext
 /*
 Copyright 2021 Dmitrii Z.
 
@@ -21,43 +21,60 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Interpolator
-import android.widget.FrameLayout
 import androidx.annotation.FloatRange
 import androidx.core.os.bundleOf
 import androidx.core.view.children
+import io.github.grakhell.expandinglayout.AnimationListener
+import io.github.grakhell.expandinglayout.COLLAPSED
+import io.github.grakhell.expandinglayout.DEFAULT_DURATION
+import io.github.grakhell.expandinglayout.DEFAULT_EXP_STATE
+import io.github.grakhell.expandinglayout.DEFAULT_PARALLAX
+import io.github.grakhell.expandinglayout.EXP_STATE_COLLAPSED
+import io.github.grakhell.expandinglayout.EXP_STATE_EXPANDED
+import io.github.grakhell.expandinglayout.DEFAULT_ORIENTATION
+import io.github.grakhell.expandinglayout.ExpandingController
+import io.github.grakhell.expandinglayout.ExpandingFacade
+import io.github.grakhell.expandinglayout.OnStateChangedListener
+import androidx.core.widget.NestedScrollView
 import androidx.dynamicanimation.animation.SpringForce
+import androidx.recyclerview.widget.RecyclerView
+import io.github.grakhell.expandinglayout.HORIZONTAL
+import io.github.grakhell.expandinglayout.Orientation
+import io.github.grakhell.expandinglayout.VERTICAL
 import kotlin.math.ceil
 import kotlin.math.round
 
-private const val KEY_SUPER = "super"
-private const val KEY_EXP = "exp_layout"
-
 /**
- *  Frame layout that's can be expanded or collapsed
+ * Version of nested scroll view that's can be expanded or collapsed
  */
 
-class ExpandingLayout(
+private const val KEY_SUPER = "ns_super"
+private const val KEY_EXP = "exp_ns_layout"
+
+class ExpandingNestedScrollView(
     context: Context,
     attrs: AttributeSet? = null
-):FrameLayout(context, attrs), ExpandingFacade{
+): NestedScrollView(context, attrs), ExpandingFacade {
 
     private val _controller: ExpandingFacade
     @Orientation
     private var _orientation = DEFAULT_ORIENTATION
+    private var nestedScrollExpandedState = isNestedScrollingEnabled
+
 
     init {
         _controller = ExpandingController.getInstance(this)
         attrs?.let {
-            val a = context.obtainStyledAttributes(it, R.styleable.ExpandingLayout)
-            _controller.setDuration(a.getInt(R.styleable.ExpandingLayout_duration, DEFAULT_DURATION.toInt()).toLong())
-            _controller.setParallax(a.getFloat(R.styleable.ExpandingLayout_parallax, DEFAULT_PARALLAX))
-            if (a.getBoolean(R.styleable.ExpandingLayout_expanded, true)) {
-                _controller.setExpandState(EXP_STATE_EXPANDED/1000)
+            val a = context.obtainStyledAttributes(it, R.styleable.ExpandingNestedScrollView)
+            _controller.setDuration(a.getInt(R.styleable.ExpandingNestedScrollView_n_duration, DEFAULT_DURATION.toInt()).toLong())
+            _controller.setParallax(a.getFloat(R.styleable.ExpandingNestedScrollView_n_parallax, DEFAULT_PARALLAX))
+            if (a.getBoolean(R.styleable.ExpandingNestedScrollView_n_expanded, true)) {
+                _controller.setExpandState(EXP_STATE_EXPANDED /1000)
             } else {
                 _controller.setExpandState(EXP_STATE_COLLAPSED)
             }
-            _orientation = a.getInt(R.styleable.ExpandingLayout_android_orientation, DEFAULT_ORIENTATION)
-            _controller.setUsingSpring(a.getBoolean(R.styleable.ExpandingLayout_uses_spring, false))
+            _orientation = a.getInt(R.styleable.ExpandingNestedScrollView_android_orientation, DEFAULT_ORIENTATION)
+            _controller.setUsingSpring(a.getBoolean(R.styleable.ExpandingNestedScrollView_n_uses_spring, false))
             a.recycle()
         }
     }
@@ -152,9 +169,15 @@ class ExpandingLayout(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
-        val size = if (_orientation == HORIZONTAL) measuredWidth else measuredHeight
-        visibility = if(_controller.getState() == COLLAPSED) View.GONE else View.VISIBLE
+        val size = if (_orientation == RecyclerView.HORIZONTAL) measuredWidth else measuredHeight
+        if(_controller.getState() == COLLAPSED) {
+            visibility = View.GONE
+            nestedScrollExpandedState = isNestedScrollingEnabled
+            isNestedScrollingEnabled = false
+        } else {
+            visibility = View.VISIBLE
+            isNestedScrollingEnabled = nestedScrollExpandedState
+        }
 
         val delta =  size - round(size*(_controller.getExpansionState()/1000))
         if (_controller.getParallax()>0){
@@ -174,8 +197,8 @@ class ExpandingLayout(
             }
         }
         when(_orientation) {
-            VERTICAL -> setMeasuredDimension(measuredWidth, (measuredHeight - delta).toInt())
-            HORIZONTAL -> setMeasuredDimension((measuredWidth - delta).toInt(),  measuredHeight)
+            RecyclerView.VERTICAL -> setMeasuredDimension(measuredWidth, (measuredHeight - delta).toInt())
+            RecyclerView.HORIZONTAL -> setMeasuredDimension((measuredWidth - delta).toInt(),  measuredHeight)
         }
     }
 

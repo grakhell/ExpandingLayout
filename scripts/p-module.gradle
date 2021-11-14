@@ -50,7 +50,7 @@ afterEvaluate {
 				artifact javadocJar
 
 				pom {
-					description = 'Android view layout that\'s can be expanded or collapsed'
+					description = PUBLISH_DESCRIPTION
 					name = PUBLISH_ARTIFACT_ID
 					url = 'https://github.com/grakhell/ExpandingLayout'
 

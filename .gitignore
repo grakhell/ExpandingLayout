@@ -19,3 +19,7 @@ gradle/
 expandinglayout/src/androidTest/
 expandinglayout/.gradle/
 expandinglayout/src/test/
+
+expandinglayout-ext/src/androidTest/
+
+expandinglayout-ext/src/test/
