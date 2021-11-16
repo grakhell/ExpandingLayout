@@ -15,6 +15,17 @@ kotlin dsl
     implementation("io.github.grakhell:ExpandingLayout:$latest_version")
 ```
 
+for extensions with additional layouts
+
+groovy
+```groovy
+    implementation 'io.github.grakhell:ExpandingLayout-ext:$latest_version'
+``` 
+kotlin dsl
+```kotlin
+    implementation("io.github.grakhell:ExpandingLayout-ext:$latest_version")
+```
+
 ## How to use
 ```XML
 <io.github.grakhell.expandinglayout.ExpandingLayout
