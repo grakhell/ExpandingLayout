@@ -23,3 +23,7 @@ expandinglayout/src/test/
 expandinglayout-ext/src/androidTest/
 
 expandinglayout-ext/src/test/
+
+expandingbox-compose/src/androidTest/
+
+expandingbox-compose/src/test/

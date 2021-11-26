@@ -5,7 +5,8 @@ def versions = [
         recyclerview    : '1.2.1',
         desugar         : '1.1.5',
         dynamicanimation: '1.1.0-alpha03',
-        dynamic_ktx     : '1.0.0-alpha03'
+        dynamic_ktx     : '1.0.0-alpha03',
+        compose         : '1.0.5'
 ]
 
 def test_versions = [
@@ -27,8 +28,17 @@ deps.kotlin = [
 deps.android = [
         core                :   "androidx.core:core-ktx:${versions.core}",
         appcompat           :   "androidx.appcompat:appcompat:${versions.appcompat}",
-        recyclerview        :   "androidx.recyclerview:recyclerview:${versions.recyclerview}",
-        desugaring_lib      :   "com.android.tools:desugar_jdk_libs:${versions.desugar}"
+        recyclerview        :   "androidx.recyclerview:recyclerview:${versions.recyclerview}"
+]
+
+deps.compose = [
+        animation           :   "androidx.compose.animation:animation:${versions.compose}",
+        foundation          :   "androidx.compose.foundation:foundation:${versions.compose}",
+        foundation_layout   :   "androidx.compose.foundation:foundation-layout:${versions.compose}",
+        material            :   "androidx.compose.material:material:${versions.compose}",
+        runtime             :   "androidx.compose.runtime:runtime:${versions.compose}",
+        ui                  :   "androidx.compose.ui:ui:${versions.compose}",
+        ui_tooling          :   "androidx.compose.ui:ui-tooling:${versions.compose}"
 ]
 
 deps.dynamicanimations = [
@@ -44,6 +54,12 @@ deps.android_test = [
         annotation          :   "androidx.annotation:annotation:${test_versions.annotations}",
         runner              :   "androidx.test:runner:${test_versions.runner}",
         espresso            :   "androidx.test.espresso:espresso-core:${test_versions.espresso}"
+]
+
+deps.compose_test = [
+        ui_test             :   "androidx.compose.ui:ui-test:${versions.compose}",
+        ui_test_junit4      :   "androidx.compose.ui:ui-test-junit4:${versions.compose}",
+        ui_test_manifest    :   "androidx.compose.ui:ui-test-manifest:${versions.compose}"
 ]
 
 ext.deps = deps

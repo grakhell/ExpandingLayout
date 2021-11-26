@@ -1,3 +1,4 @@
 rootProject.name = "ExpandingLayout"
 include ':expandinglayout'
 include ':expandinglayout-ext'
+include ':expandingbox-compose'

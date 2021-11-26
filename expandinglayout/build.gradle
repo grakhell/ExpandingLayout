@@ -16,9 +16,6 @@ android {
 }
 
 deps[project.name] = [
-        coreLibraryDesugaring    : [
-                deps.android.desugaring_lib
-        ],
 		implementation           : [
                 deps.kotlin.stdlib,
                 deps.android.core,

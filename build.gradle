@@ -51,7 +51,6 @@ subprojects {
                 versionName rootProject.ext.androidVersionName
             }
             compileOptions {
-                coreLibraryDesugaringEnabled true
                 sourceCompatibility rootProject.ext.sourceCompatibilityVersion
                 targetCompatibility rootProject.ext.targetCompatibilityVersion
             }
