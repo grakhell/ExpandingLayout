@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+    buildFeatures {
+        compose true
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+deps[project.name] = [
+        implementation           : [
+                deps.kotlin.stdlib,
+                deps.android.core,
+                deps.android.appcompat,
+                deps.compose.ui,
+                deps.compose.ui_tooling,
+                deps.compose.foundation,
+                deps.compose.runtime,
+                deps.compose.animation
+        ],
+        testImplementation      : [
+                deps.test.junit
+        ],
+        debugImplementation     : [
+                deps.compose_test.manifest
+        ],
+        androidTestImplementation : [
+                deps.test.ext,
+                deps.android_test.espresso,
+                deps.compose_test.ui_test,
+                deps.compose_test.ui_test_junit4
+        ]
+]
