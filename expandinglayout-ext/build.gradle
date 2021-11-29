@@ -16,9 +16,6 @@ android {
 }
 
 deps[project.name] = [
-        coreLibraryDesugaring    : [
-                deps.android.desugaring_lib
-        ],
         api                      : [
                 project(":expandinglayout")
         ],
