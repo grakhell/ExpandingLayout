@@ -1,6 +1,6 @@
 package io.github.grakhell.expandinglayout_ext
 /*
-Copyright 2021 Dmitrii Z.
+Copyright 2022 Dmitrii Z.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import io.github.grakhell.expandinglayout.EXP_STATE_COLLAPSED
 import io.github.grakhell.expandinglayout.EXP_STATE_EXPANDED
 import io.github.grakhell.expandinglayout.DEFAULT_ORIENTATION
 import io.github.grakhell.expandinglayout.ExpandingController
-import io.github.grakhell.expandinglayout.ExpandingFacade
+import io.github.grakhell.expandinglayout.IExpandable
 import io.github.grakhell.expandinglayout.OnStateChangedListener
 import kotlin.math.ceil
 import kotlin.math.round
@@ -51,9 +51,9 @@ private const val KEY_EXP = "exp_rv_layout"
 class ExpandingRecyclerView(
     context: Context,
     attrs: AttributeSet? = null
-):RecyclerView(context, attrs), ExpandingFacade {
+):RecyclerView(context, attrs), IExpandable {
 
-    private val _controller: ExpandingFacade
+    private val _controller: IExpandable
     @Exorientation
     private var _orientation = DEFAULT_ORIENTATION
     private var nestedScrollExpandedState = isNestedScrollingEnabled

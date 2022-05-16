@@ -1,6 +1,6 @@
 package io.github.grakhell.expandinglayout_ext
 /*
-Copyright 2021 Dmitrii Z.
+Copyright 2022 Dmitrii Z.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import io.github.grakhell.expandinglayout.EXP_STATE_COLLAPSED
 import io.github.grakhell.expandinglayout.EXP_STATE_EXPANDED
 import io.github.grakhell.expandinglayout.DEFAULT_ORIENTATION
 import io.github.grakhell.expandinglayout.ExpandingController
-import io.github.grakhell.expandinglayout.ExpandingFacade
+import io.github.grakhell.expandinglayout.IExpandable
 import io.github.grakhell.expandinglayout.OnStateChangedListener
 import androidx.core.widget.NestedScrollView
 import androidx.dynamicanimation.animation.SpringForce
@@ -54,9 +54,9 @@ private const val KEY_EXP = "exp_ns_layout"
 class ExpandingNestedScrollView(
     context: Context,
     attrs: AttributeSet? = null
-): NestedScrollView(context, attrs), ExpandingFacade {
+): NestedScrollView(context, attrs), IExpandable {
 
-    private val _controller: ExpandingFacade
+    private val _controller: IExpandable
     @Orientation
     private var _orientation = DEFAULT_ORIENTATION
     private var nestedScrollExpandedState = isNestedScrollingEnabled

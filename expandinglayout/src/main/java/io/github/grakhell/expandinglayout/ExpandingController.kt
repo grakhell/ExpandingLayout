@@ -1,8 +1,21 @@
 package io.github.grakhell.expandinglayout
+/*
+Copyright 2022 Dmitrii Z.
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 import android.animation.Animator
 import android.animation.ValueAnimator
-import android.os.Parcelable
 import android.view.View
 import android.view.animation.Interpolator
 import androidx.annotation.RestrictTo
@@ -32,11 +45,11 @@ const val DEFAULT_EXP_STATE = EXP_STATE_EXPANDED
 const val DEFAULT_ORIENTATION = VERTICAL
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-class ExpandingController private constructor(private val view: View): ExpandingFacade{
+class ExpandingController private constructor(private val view: View): IExpandable{
 
     companion object {
         @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-        fun getInstance(view:View):ExpandingFacade = ExpandingController(view)
+        fun getInstance(view:View):IExpandable = ExpandingController(view)
     }
 
     private var _duration = DEFAULT_DURATION
@@ -182,7 +195,7 @@ class ExpandingController private constructor(private val view: View): Expanding
         }
         view.visibility = if (_state == COLLAPSED) View.GONE else View.VISIBLE
         _expState = target
-        view.requestLayout()
+        if(!view.isInLayout) view.requestLayout()
         _stateListener?.expansionStateChanged(target/1000,_state)
     }
 

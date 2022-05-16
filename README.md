@@ -71,7 +71,7 @@ There are exist some performance issues when ExpandingLayout have NestedScrollVi
 
 ## Licence
 ```
-Copyright 2021 Dmitrii Z.
+Copyright 2022 Dmitrii Z.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

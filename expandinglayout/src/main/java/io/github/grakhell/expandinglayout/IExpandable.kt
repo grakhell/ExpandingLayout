@@ -6,7 +6,7 @@ import androidx.annotation.RestrictTo
 import androidx.dynamicanimation.animation.SpringForce
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-interface ExpandingFacade {
+interface IExpandable {
 
     fun setDuration(duration:Long)
     fun setParallax(
